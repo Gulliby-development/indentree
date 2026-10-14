@@ -37,7 +37,7 @@ describe("README documentation", () => {
   test("documents the three usage forms verbatim", () => {
     expect(readme).toContain(
       [
-        "usage: indentree convert [--to json|markdown|numbered|paths] [--indent N] FILE",
+        "usage: indentree convert [--to json|markdown|numbered|paths|html] [--indent N] FILE",
         "       indentree check [--max-depth N] FILE...",
         "       indentree sort [--reverse] FILE",
       ].join("\n"),
