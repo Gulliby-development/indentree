@@ -2,7 +2,7 @@
 
 # indentree
 
-indentree is an offline command-line tool for people who keep notes, plans, and tables of contents as indented plain text. Convert an outline to JSON, Markdown, outline numbers, or paths; sort every level; and check for duplicate siblings, over-deep nesting, and section labels without content. The tool reads input only and never changes your files.
+indentree is an offline command-line tool for people who keep notes, plans, and tables of contents as indented plain text. Convert an outline to JSON, Markdown, outline numbers, paths, or an HTML list; sort every level; and check for duplicate siblings, over-deep nesting, and section labels without content. The tool reads input only and never changes your files.
 
 [![CI](https://github.com/Gulliby-development/indentree/actions/workflows/ci.yml/badge.svg)](https://github.com/Gulliby-development/indentree/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -24,12 +24,12 @@ bun run src/main.ts --help
 The command forms are:
 
 ```
-usage: indentree convert [--to json|markdown|numbered|paths] [--indent N] FILE
+usage: indentree convert [--to json|markdown|numbered|paths|html] [--indent N] FILE
        indentree check [--max-depth N] FILE...
        indentree sort [--reverse] FILE
 ```
 
-Use a file path as `FILE`, or `-` to read standard input. Convert defaults to JSON; its `--indent` option accepts 0 through 8. Check accepts one or more files and an optional maximum depth. Sort orders each sibling group alphabetically; `--reverse` sorts in descending order.
+Use a file path as `FILE`, or `-` to read standard input. Convert defaults to JSON; its `--indent` option accepts 0 through 8 and only affects JSON. Check accepts one or more files and an optional maximum depth. Sort orders each sibling group alphabetically; `--reverse` sorts in descending order.
 
 For example, save this outline as `plan.txt`:
 
@@ -78,6 +78,31 @@ Fruit / Apple / Fuji
 Vegetables
 Vegetables / Carrot
 ```
+
+`indentree convert --to html plan.txt`:
+
+```text
+<ul>
+  <li>Fruit
+    <ul>
+      <li>Banana</li>
+      <li>Apple
+        <ul>
+          <li>Gala</li>
+          <li>Fuji</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Vegetables
+    <ul>
+      <li>Carrot</li>
+    </ul>
+  </li>
+</ul>
+```
+
+The `html` format writes nested `<ul>` and `<li>` elements, two spaces per element level, and escapes `&`, `<` and `>` in item text as `&amp;`, `&lt;` and `&gt;`. It adds no `<html>` or `<body>` wrapper, so the output can be pasted into a page. An empty outline prints nothing.
 
 `indentree sort plan.txt`:
 

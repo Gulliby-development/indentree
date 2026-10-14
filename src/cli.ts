@@ -13,7 +13,7 @@ export interface Io {
 }
 
 const HELP_TEXT =
-  "usage: indentree convert [--to json|markdown|numbered|paths] [--indent N] FILE\n" +
+  "usage: indentree convert [--to json|markdown|numbered|paths|html] [--indent N] FILE\n" +
   "       indentree check [--max-depth N] FILE...\n" +
   "       indentree sort [--reverse] FILE\n";
 

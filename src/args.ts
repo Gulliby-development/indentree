@@ -13,7 +13,7 @@ export type ParsedArgs =
   | { command: "sort"; file: string; reverse: boolean }
   | { command: "check"; files: string[]; maxDepth: number | null };
 
-const FORMATS: Format[] = ["json", "markdown", "numbered", "paths"];
+const FORMATS: Format[] = ["json", "markdown", "numbered", "paths", "html"];
 
 export function parseArgs(args: string[]): ParsedArgs {
   if (args.length === 1 && args[0] === "--help") {

@@ -194,7 +194,7 @@ describe("run", () => {
     const io = memoryIo();
     expect(run(["--help"], io)).toBe(0);
     expect(io.stdout).toEqual([
-      "usage: indentree convert [--to json|markdown|numbered|paths] [--indent N] FILE\n" +
+      "usage: indentree convert [--to json|markdown|numbered|paths|html] [--indent N] FILE\n" +
         "       indentree check [--max-depth N] FILE...\n" +
         "       indentree sort [--reverse] FILE\n",
     ]);
