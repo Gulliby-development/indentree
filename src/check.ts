@@ -11,17 +11,32 @@ export function checkOutline(items: Item[], maxDepth: number | null): Problem[] 
 
   const addSiblingChecks = (siblings: Item[], depth: number): void => {
     const firstLines = new Map<string, number>();
+    const firstFoldedTexts = new Map<string, { text: string; line: number }>();
 
     for (const item of siblings) {
       const firstLine = firstLines.get(item.text);
-      if (firstLine === undefined) {
-        firstLines.set(item.text, item.line);
-      } else {
+      if (firstLine !== undefined) {
         problems.push({
           line: item.line,
           code: "IT001",
           message: `duplicate sibling "${item.text}" (first on line ${firstLine})`,
         });
+      } else {
+        firstLines.set(item.text, item.line);
+        const foldedText = item.text.replace(/[A-Z]/g, (letter: string) =>
+          String.fromCharCode(letter.charCodeAt(0) + 32),
+        );
+        const firstFoldedMatch = firstFoldedTexts.get(foldedText);
+
+        if (firstFoldedMatch === undefined) {
+          firstFoldedTexts.set(foldedText, { text: item.text, line: item.line });
+        } else {
+          problems.push({
+            line: item.line,
+            code: "IT004",
+            message: `sibling "${item.text}" differs only in case from "${firstFoldedMatch.text}" (line ${firstFoldedMatch.line})`,
+          });
+        }
       }
       pending.push({ item, depth });
     }
