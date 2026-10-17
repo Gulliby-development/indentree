@@ -131,6 +131,7 @@ Input is UTF-8 text. A leading BOM is ignored; lines may use LF or CRLF. Blank l
 - `IT001`: a later sibling repeats the text of an earlier sibling under the same parent.
 - `IT002`: with `--max-depth M`, an item is deeper than the maximum (the top level is depth 1).
 - `IT003`: an item ends in a colon but has no sub-items.
+- `IT004`: a later sibling differs from an earlier sibling only in the case of the letters A to Z, for example `apple` after `Apple`. An exact repeat is `IT001` only; other letters and spaces are compared as they are.
 
 For example, save this outline as `messy.txt`:
 
