@@ -1,5 +1,8 @@
 import type { Item, Problem } from "./model";
 
+// A leading outline number: "1.", "2)", "2.3", "2.3." or "10.1.2)" followed by a space.
+const OUTLINE_NUMBER = /^(?:[0-9]+(?:\.[0-9]+)+[.)]?|[0-9]+[.)])(?= )/;
+
 interface PendingItem {
   item: Item;
   depth: number;
@@ -64,6 +67,15 @@ export function checkOutline(items: Item[], maxDepth: number | null): Problem[] 
         line: item.line,
         code: "IT003",
         message: `"${item.text}" ends with a colon but has no sub-items`,
+      });
+    }
+
+    const outlineNumber = OUTLINE_NUMBER.exec(item.text);
+    if (outlineNumber !== null) {
+      problems.push({
+        line: item.line,
+        code: "IT005",
+        message: `"${item.text}" starts with the outline number "${outlineNumber[0]}"`,
       });
     }
 

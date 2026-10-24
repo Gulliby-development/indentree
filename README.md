@@ -132,6 +132,7 @@ Input is UTF-8 text. A leading BOM is ignored; lines may use LF or CRLF. Blank l
 - `IT002`: with `--max-depth M`, an item is deeper than the maximum (the top level is depth 1).
 - `IT003`: an item ends in a colon but has no sub-items.
 - `IT004`: a later sibling differs from an earlier sibling only in the case of the letters A to Z, for example `apple` after `Apple`. An exact repeat is `IT001` only; other letters and spaces are compared as they are.
+- `IT005`: an item starts with an outline number such as `1.`, `2)` or `2.3` followed by a space; `convert --to numbered` would number it a second time. Texts such as `2024 plan` and `1.5x faster` are not flagged.
 
 For example, save this outline as `messy.txt`:
 
@@ -156,6 +157,23 @@ messy.txt:5: IT001 duplicate sibling "Fruit" (first on line 1)
 messy.txt:8: IT002 depth 4 exceeds the maximum of 3
 messy.txt:9: IT003 "Todo:" ends with a colon but has no sub-items
 5 problems
+```
+
+For example, save this outline as `numbered.txt`:
+
+```text
+1. Intro
+  1.1 Scope
+  Background
+2024 plan
+```
+
+`indentree check numbered.txt`:
+
+```text
+numbered.txt:1: IT005 "1. Intro" starts with the outline number "1."
+numbered.txt:2: IT005 "1.1 Scope" starts with the outline number "1.1"
+2 problems
 ```
 
 ## Exit codes
