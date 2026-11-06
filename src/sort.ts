@@ -20,11 +20,11 @@ function compareCodePoints(left: string, right: string): number {
   return leftPoints.length - rightPoints.length;
 }
 
-export function sortItems(items: Item[], reverse: boolean): Item[] {
+export function sortItems(items: Item[], reverse: boolean, depth?: number): Item[] {
   const direction = reverse ? -1 : 1;
   const result: Item[] = [];
-  const pending: Array<{ source: Item[]; target: Item[]; index: number }> = [
-    { source: items, target: result, index: 0 },
+  const pending: Array<{ source: Item[]; target: Item[]; index: number; level: number }> = [
+    { source: items, target: result, index: 0, level: 1 },
   ];
 
   while (pending.length > 0) {
@@ -34,7 +34,9 @@ export function sortItems(items: Item[], reverse: boolean): Item[] {
     }
 
     if (frame.index === frame.source.length) {
-      frame.target.sort((left, right) => direction * compareCodePoints(left.text, right.text));
+      if (depth === undefined || frame.level <= depth) {
+        frame.target.sort((left, right) => direction * compareCodePoints(left.text, right.text));
+      }
       pending.pop();
       continue;
     }
@@ -46,7 +48,12 @@ export function sortItems(items: Item[], reverse: boolean): Item[] {
     frame.index += 1;
     const clone: Item = { ...item, children: [] };
     frame.target.push(clone);
-    pending.push({ source: item.children, target: clone.children, index: 0 });
+    pending.push({
+      source: item.children,
+      target: clone.children,
+      index: 0,
+      level: frame.level + 1,
+    });
   }
 
   return result;

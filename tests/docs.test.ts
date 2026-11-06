@@ -39,7 +39,7 @@ describe("README documentation", () => {
       [
         "usage: indentree convert [--to json|markdown|numbered|paths|html] [--indent N] FILE",
         "       indentree check [--max-depth N] FILE...",
-        "       indentree sort [--reverse] FILE",
+        "       indentree sort [--reverse] [--depth N] FILE",
       ].join("\n"),
     );
   });
