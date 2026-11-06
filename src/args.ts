@@ -10,7 +10,7 @@ export class UsageError extends Error {
 export type ParsedArgs =
   | { command: "help" }
   | { command: "convert"; file: string; format: Format; indent: number }
-  | { command: "sort"; file: string; reverse: boolean }
+  | { command: "sort"; file: string; reverse: boolean; depth?: number | undefined }
   | { command: "check"; files: string[]; maxDepth: number | null };
 
 const FORMATS: Format[] = ["json", "markdown", "numbered", "paths", "html"];
@@ -35,6 +35,7 @@ export function parseArgs(args: string[]): ParsedArgs {
   let indent = 2;
   let maxDepth: number | null = null;
   let reverse = false;
+  let depth: number | undefined;
   const files: string[] = [];
 
   for (let index = 1; index < args.length; index += 1) {
@@ -79,6 +80,17 @@ export function parseArgs(args: string[]): ParsedArgs {
     } else if (argument === "--reverse") {
       reverse = true;
       continue;
+    } else {
+      const depthOption = optionValue(args, index, "--depth");
+      if (depthOption !== null) {
+        const { value, nextIndex } = depthOption;
+        if (!/^[1-9]$/.test(value)) {
+          throw new UsageError(`invalid depth "${value}"`);
+        }
+        depth = Number(value);
+        index = nextIndex;
+        continue;
+      }
     }
 
     if (argument.startsWith("-") && argument !== "-") {
@@ -102,7 +114,7 @@ export function parseArgs(args: string[]): ParsedArgs {
     return { command, file: files[0] ?? "", format, indent };
   }
   if (command === "sort") {
-    return { command, file: files[0] ?? "", reverse };
+    return { command, file: files[0] ?? "", reverse, depth };
   }
   return { command, files, maxDepth };
 }

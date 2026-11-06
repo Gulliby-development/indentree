@@ -15,7 +15,7 @@ export interface Io {
 const HELP_TEXT =
   "usage: indentree convert [--to json|markdown|numbered|paths|html] [--indent N] FILE\n" +
   "       indentree check [--max-depth N] FILE...\n" +
-  "       indentree sort [--reverse] FILE\n";
+  "       indentree sort [--reverse] [--depth N] FILE\n";
 
 class RunError extends Error {}
 
@@ -45,7 +45,7 @@ export function run(args: string[], io: Io): number {
 
     if (parsed.command === "sort") {
       const items = readOutline(parsed.file, io);
-      const sorted = sortItems(items, parsed.reverse);
+      const sorted = sortItems(items, parsed.reverse, parsed.depth);
       writeIfNotEmpty(io, outlineText(sorted));
       return 0;
     }

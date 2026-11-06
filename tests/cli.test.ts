@@ -196,7 +196,7 @@ describe("run", () => {
     expect(io.stdout).toEqual([
       "usage: indentree convert [--to json|markdown|numbered|paths|html] [--indent N] FILE\n" +
         "       indentree check [--max-depth N] FILE...\n" +
-        "       indentree sort [--reverse] FILE\n",
+        "       indentree sort [--reverse] [--depth N] FILE\n",
     ]);
     expect(io.stderr).toEqual([]);
     expect(io.reads).toEqual([]);

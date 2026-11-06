@@ -26,10 +26,10 @@ The command forms are:
 ```
 usage: indentree convert [--to json|markdown|numbered|paths|html] [--indent N] FILE
        indentree check [--max-depth N] FILE...
-       indentree sort [--reverse] FILE
+       indentree sort [--reverse] [--depth N] FILE
 ```
 
-Use a file path as `FILE`, or `-` to read standard input. Convert defaults to JSON; its `--indent` option accepts 0 through 8 and only affects JSON. Check accepts one or more files and an optional maximum depth. Sort orders each sibling group alphabetically; `--reverse` sorts in descending order.
+Use a file path as `FILE`, or `-` to read standard input. Convert defaults to JSON; its `--indent` option accepts 0 through 8 and only affects JSON. Check accepts one or more files and an optional maximum depth. Sort orders each sibling group alphabetically; `--reverse` sorts in descending order. `--depth N` (a single digit from 1 to 9) sorts only the first N levels of the outline: the top level is level 1, and the groups of siblings below level N keep their order in the file. Without `--depth` every level is sorted.
 
 For example, save this outline as `plan.txt`:
 
@@ -112,6 +112,18 @@ Fruit
     Fuji
     Gala
   Banana
+Vegetables
+  Carrot
+```
+
+`indentree sort --depth 1 plan.txt` sorts only the top level, so the children keep their order:
+
+```text
+Fruit
+  Banana
+  Apple
+    Gala
+    Fuji
 Vegetables
   Carrot
 ```
